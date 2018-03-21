@@ -9,7 +9,7 @@
 display.setStatusBar (display.HiddenStatusBar)
 
 -- change the backround colour
-display.setDefault ("background", 124/255, 249/255, 199/255)
+display.setDefault ("background", 40/255, 190/255, 199/255)
 
 -----------------------------------------------------------------------------------------------
 -- LOCAL IMAGES
@@ -35,6 +35,10 @@ local randomNumber2
 local userAnswer
 local correctAnswer
 
+local incorrectObject
+local pointsObject
+local points = 0
+
 -----------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------------
@@ -45,9 +49,14 @@ local function AskQuestion(  )
 	randomNumber2 = math.random (10, 20)
 
 	correctAnswer = randomNumber1 + randomNumber2
+	correctAnswer = randomNumber1 - randomNumber2
+	correctAnswer = randomNumber1 * randomNumber2
+
 
 	-- create question in text object
 	questionObject.text = randomNumber1 .. " + " .. randomNumber2 .. " = "
+	questionObject.text = randomNumber1 .. " - " .. randomNumber2 .. " = "
+	questionObject.text = randomNumber1 .. " x " .. randomNumber2 .. " = "
 
 end
 
@@ -55,6 +64,12 @@ local function HideCorrect(  )
 	correctObject.isVisible = false
 	AskQuestion()
 end
+
+local function HideInCorrect(  )
+	incorrectObject.isVisible = false
+	AskQuestion()
+end
+
 
 local function NumericTextFieldListener( event )
 	
@@ -72,9 +87,18 @@ local function NumericTextFieldListener( event )
 		-- if the user answer and the correct answer are the same:
 		if (userAnswer == correctAnswer) then
 			correctObject.isVisible = true
+
+			-- when the user gets it correct add one point to the code and display it in text
+			points = points + 1
+			pointsObject.text = "Points : " .. points
+
+			-- call the HideCorrect function after 2 seconds
 			timer.performWithDelay(2000, HideCorrect)
+		 else
 
-
+			incorrectObject.isVisible = true
+			-- call the HideInCorrect function after 1 second
+			timer.performWithDelay(2000, HideCorrect)
 		end
 	end
 end
@@ -97,9 +121,15 @@ incorrectObject = display.newText( "Incorrect", display.contentWidth/2, display.
 incorrectObject:setTextColor(255/255, 0/255, 0/255)
 incorrectObject.isVisible = false
 
+-- make the points object
+pointsObject = display.newText( "Points : " .. points, display.contentWidth/2, display.contentHeight/2, nil, 60 )
+
+-- change the colour of the "points" object
+pointsObject: setTextColor(5/255, 0/255, 255/255)
+
 -- create numeric feild 
 numericField = native.newTextField( 475, 250, 200, 100 )
-numericField.inputType = "number"
+numericField.inputType = "decimal"
 
 -- add event listener for the numeric field
 --numericField:addEventListener( "userInput", NumericFieldListener )
