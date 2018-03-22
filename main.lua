@@ -125,7 +125,7 @@ end
 -----------------------------------------------------------------------------------------------
 
 -- dispalys a question and sets the colour
-questionObject = display.newText( "", 230, 250, nil, 60 )
+questionObject = display.newText( "", 230, 250, "Georgia", 60 )
 questionObject:setTextColor(155/255, 14/255, 198/255)
 
 -- create the correct text object and make it invisible
