@@ -48,30 +48,47 @@ local function AskQuestion(  )
 	randomNumber1 = math.random (10, 20)
 	randomNumber2 = math.random (10, 20)
 
-	correctAnswer = randomNumber1 + randomNumber2
-	correctAnswer = randomNumber1 - randomNumber2
-	correctAnswer = randomNumber1 * randomNumber2
+	-- generate random number for the operator
+	randomOperator = math.random(1, 3)
+	if (randomOperator == 1) then
 
+		--calculate the correct answer for addition
+		correctAnswer = randomNumber1 + randomNumber2
 
-	-- create question in text object
-	questionObject.text = randomNumber1 .. " + " .. randomNumber2 .. " = "
-	questionObject.text = randomNumber1 .. " - " .. randomNumber2 .. " = "
-	questionObject.text = randomNumber1 .. " x " .. randomNumber2 .. " = "
+		-- create question in text object for addition
+		questionObject.text = randomNumber1 .. " + " .. randomNumber2 .. " = "
 
+		elseif (randomOperator == 2) then
+
+		--calculate the correct answer for subtraction
+		correctAnswer = randomNumber1 - randomNumber2
+
+		-- create question in text object for subtraction
+		questionObject.text = randomNumber1 .. " - " .. randomNumber2 .. " = "
+
+		elseif (randomOperator == 3) then
+
+		--calculate the correct answer for multiplication
+		correctAnswer = randomNumber1 * randomNumber2
+
+		-- create question in text object for multiplication
+		questionObject.text = randomNumber1 .. " x " .. randomNumber2 .. " = "
+	end
 end
+
 
 local function HideCorrect(  )
 	correctObject.isVisible = false
 	AskQuestion()
 end
 
-local function HideInCorrect(  )
+local function HideIncorrect(  )
 	incorrectObject.isVisible = false
 	AskQuestion()
 end
 
 
-local function NumericTextFieldListener( event )
+local function NumericFieldListener( event )
 	
 	-- User begins editing "numericField"
 	if ( event.phase == "began" ) then
@@ -98,7 +115,7 @@ local function NumericTextFieldListener( event )
 
 			incorrectObject.isVisible = true
 			-- call the HideInCorrect function after 1 second
-			timer.performWithDelay(2000, HideCorrect)
+			timer.performWithDelay(2000, HideIncorrect)
 		end
 	end
 end
@@ -132,7 +149,7 @@ numericField = native.newTextField( 475, 250, 200, 100 )
 numericField.inputType = "decimal"
 
 -- add event listener for the numeric field
---numericField:addEventListener( "userInput", NumericFieldListener )
+numericField:addEventListener( "userInput", NumericFieldListener )
 
 -----------------------------------------------------------------------------------------------
 -- FUNCTION CALLS
